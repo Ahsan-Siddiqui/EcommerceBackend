@@ -31,11 +31,11 @@ class UserController extends Controller
 
         $input = $request->all();
         $user = new User();
-        $user->name = $request->name;
+        $user->name = $request->json('name');
         $user->role_id = 3;
-        $user->email = $request->email;
-        $user->password =  Hash::make($request->password);
-        $user->avatar = $request->avatar;
+        $user->email = $request->json('email');
+        $user->password =  Hash::make($request->json('password'));
+        $user->avatar = $request->json('avatar');
 
         if($user->save()) {
             $response  =  $user;
@@ -47,8 +47,8 @@ class UserController extends Controller
 
 
     public function login(Request $request)
-    { 
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
+    {    
+        if (Auth::attempt(['email' => $request->json('email'), 'password' => $request->json('password')])) {
             $user = Auth::user();
             $response  =  $user;
             $response->token =  $user->createToken('ecommerce')->accessToken;
