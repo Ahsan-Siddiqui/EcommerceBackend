@@ -53,7 +53,7 @@ class UserController extends Controller
             $response->token =  $user->createToken('ecommerce')->accessToken;
             return response()->json(['status' => $this->successStatus, 'data' => $response, 'error' => null]);
         } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json(['status' => 401,'error' => 'Invalid email or password'], 401);
         }
     }
 
