@@ -18,13 +18,16 @@ Route::group(["namespace"=>"Api"], function() {
     
     Route::post('login', 'UserController@login');
     Route::post('signup', 'UserController@signup');
+
+    Route::get('categories', 'CategoryController@get');
+    Route::get('products', 'ProductController@get');
+    Route::get('vendors', 'UserController@getVendors');
+    
 });
 
 
 Route::group(['middleware' => ['auth:api'],'namespace' => 'Api'],function() {
 
-    Route::get('categories', 'CategoryController@get');
-    Route::get('products', 'ProductController@get');
-    Route::get('vendors', 'UserController@getVendors');
+    
 
 });
