@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('vendor_id');
             $table->integer('user_id');
+            $table->string('ordernum');
             $table->integer('total_amount');
             $table->integer('address');
             $table->integer('customer_name');

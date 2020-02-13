@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
  
-Route::group(["namespace"=>"Api"], function() {
+Route::group(["namespace"=>"Api",'namespace' => 'Api'], function() {
     
     Route::post('login', 'UserController@login');
     Route::post('signup', 'UserController@signup');
@@ -22,12 +22,15 @@ Route::group(["namespace"=>"Api"], function() {
     Route::get('categories', 'CategoryController@get');
     Route::get('products', 'ProductController@get');
     Route::get('vendors', 'UserController@getVendors');
+   
     
 });
 
 
 Route::group(['middleware' => ['auth:api'],'namespace' => 'Api'],function() {
 
-    
+    Route::get('cart', 'CartController@getCart');
+    Route::post('cart/add', 'CartController@addToCart');
+    Route::post('order/create', 'OrderController@createOrder');
 
 });
