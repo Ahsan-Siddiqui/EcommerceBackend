@@ -19,10 +19,9 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id');
             $table->string('ordernum');
             $table->integer('total_amount');
-            $table->integer('address');
-            $table->integer('customer_name');
-            $table->integer('order_status');
-            $table->string('name');
+            $table->string('address');
+            $table->string('customer_name');
+            $table->string('order_status'); 
             $table->timestamps();
         });
     }
