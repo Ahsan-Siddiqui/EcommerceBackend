@@ -18,9 +18,21 @@ class CartController extends Controller
     {
 
         $product = Product::find($request->json('product_id'));
-
-        if ($request->json('qty') > $product->qty) { 
+        
+        if ($request->json('qty') > $product->stock) { 
             return response()->json(['status' => 401, 'data' => [], 'error' => "Product's stock not available."]);   
+        }
+
+        $cart = Cart::where('user_id',$request->user()->id)->first();
+
+        if($cart) {
+
+            $chck = Cart::where('user_id',$request->user()->id)
+                    ->where('vendor_id',$request->json('vendor_id'))->get();
+
+            if($chck->isEmpty()) {
+                return response()->json(['status' => 401, 'data' => [], 'error' => 'Cart must contain same sellers items.']);
+            } 
         }
 
 
@@ -29,6 +41,7 @@ class CartController extends Controller
             'user_id'      => 'required',
             'product_id'   => 'required',
             'qty'          => 'required',
+            'price'          => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -39,15 +52,17 @@ class CartController extends Controller
         $vendor_id = $request->json('vendor_id');
         $user_id =  $request->json('user_id');
         $product_id = $request->json('product_id');
+        $price = $request->json('price');
         $qty =  $request->json('qty');
 
 
         $entry = Cart::where(['product_id' => $product_id])->increment('qty', 1);
         if (!$entry) {
             $save =  Cart::create([
-                'vendor_id'   => $vendor_id,
+                'vendor_id'     => $vendor_id,
                 'user_id'       => $user_id,
-                'product_id'        => $product_id,
+                'product_id'   => $product_id,
+                'price'        => $price,
                 'qty'          => $qty
             ]);
         }
